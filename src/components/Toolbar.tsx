@@ -99,11 +99,11 @@ export function Toolbar({
         </button>
         <a
           className="view__btn mapbtn"
-          href="https://dnu9jk22jnw2j.cloudfront.net/9ecf514191179f6273bd2f8f584dd51d.png"
+          href="https://ringsideseat.live/acton26/pulls"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Fair Map
+          Ringside Seat
         </a>
       </div>
     </div>
