@@ -125,6 +125,38 @@
   font-weight: 700;
 }
 
+/* ---------- Home board list ---------- */
+.board-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 640px;
+}
+
+.board-list__link {
+  display: block;
+  padding: 18px 22px;
+  border: var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.board-list__link:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.board-list__link:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
 /* ---------- Event tabs ---------- */
 .events {
   display: flex;
@@ -725,6 +757,8 @@ a.view__btn {
   font-weight: 800;
   font-size: 16px;
   box-shadow: var(--shadow-sm);
+  display: inline-block;
+  text-decoration: none;
 }
 
 .btn:hover {

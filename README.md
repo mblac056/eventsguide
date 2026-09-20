@@ -1,16 +1,19 @@
 # Events Guide
 
-A live "what's on now" board for events, driven by a read-only Google Sheet.
-Think of it like a TV guide where each **channel is a venue** (an entertainment
-stage, the truck pull arena, the kids zone…) so you can see at a glance what's
-happening right now across an event — and scrub forwards/backwards in time or
-search the whole schedule.
+A live "what's on now" board for events. Think of it like a TV guide where each
+**channel is a venue** (an entertainment stage, the truck pull arena, the kids
+zone…) so you can see at a glance what's happening right now across an event —
+and scrub forwards/backwards in time or search the whole schedule.
 
-Built with **React + TypeScript + Vite**.
+Schedules are ordinary spreadsheets. Drop a spreadsheet in a Drive folder and
+it shows up on the homepage; visitors never see Drive.
 
-## How the sheet is structured
+Built with **React + TypeScript + Vite**, hosted on **Netlify**.
 
-- **Each tab in the spreadsheet is an event** (e.g. `County Fair · Saturday`).
+## How a spreadsheet is structured
+
+- **Each spreadsheet is one event** (listed on the homepage by its title).
+- **Each tab in the spreadsheet** is a day or sub-event (e.g. `Saturday`).
 - Each tab has one row per scheduled item with these columns:
 
   | date | venue | item | item details | start time | end time |
@@ -40,28 +43,44 @@ npm run dev
 ```
 
 This runs immediately on **bundled sample data** (a fictional county fair) so you
-can see the UI without any setup.
+can see the UI without any setup. The homepage lists the sample event; open it
+to get the Now / Guide views.
 
-## Connecting your Google Sheet
+## Connecting a folder
 
-1. Share the sheet as **"Anyone with the link can view"**.
-2. In the [Google Cloud Console](https://console.cloud.google.com/), enable the
-   **Google Sheets API** and create an **API key**.
-3. Copy `.env.example` to `.env.local` and fill in:
+1. In [Google Cloud Console](https://console.cloud.google.com/), create a
+   project (or pick one), enable the **Google Drive API** and **Google Sheets
+   API**, and create a **service account**. Download a JSON key.
+2. Share your Drive folder with the service account email as **Viewer**.
+   Spreadsheets in that folder inherit access.
+3. Copy `.env.example` to `.env` and fill in:
 
    ```bash
-   VITE_SHEET_ID=your_spreadsheet_id      # from the sheet URL
-   VITE_GOOGLE_API_KEY=your_api_key
+   GOOGLE_CLIENT_EMAIL=...@....iam.gserviceaccount.com
+   GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+   GOOGLE_DRIVE_FOLDER_ID=the_id_from_the_folder_url
    ```
 
-4. Restart `npm run dev`.
+   The folder id is the `THIS_PART` in
+   `https://drive.google.com/drive/folders/THIS_PART`.
 
-> The API key is only used for read-only requests to a public sheet. For a
-> production deployment you should restrict the key (e.g. to the Sheets API and
-> your site's HTTP referrer).
+4. Stop `npm run dev` if it is running, then start the site **with functions**:
+
+   ```bash
+   npm run dev:live
+   ```
+
+   Open **http://localhost:8888** (not 5173). Vite alone cannot read the folder.
+
+5. On Netlify, set the same three environment variables (Site settings →
+   Environment variables). Do not prefix them with `VITE_`.
+
+Each new spreadsheet in the folder appears on the homepage as its title, at a
+    'County Fair · Saturday' → `/county-fair-saturday`. Duplicate titles get a short stable suffix.
 
 ## Using Events Guide
 
+- **Homepage**: every event (spreadsheet title) as a link.
 - **On Now** view: one card per venue showing what's playing right now, a
   progress bar, what's up next, and later items.
 - **Guide** view: a classic TV-guide timeline (venues down the side, time across
@@ -69,12 +88,14 @@ can see the UI without any setup.
 - **Time scrubber**: jump back/forward by 15 minutes or an hour to preview the
   schedule at another moment. Hit the time pill to snap back to **LIVE**.
 - **Search**: filter across acts, venues, and details; matches are highlighted.
-- **Event tabs**: switch between events (sheet tabs).
-- **↻**: refresh the schedule from the sheet.
+- **Event tabs**: switch between days or sub-events (spreadsheet tabs).
+- **↻**: refresh the list or the open schedule.
 
 ## Scripts
 
-- `npm run dev` – start the dev server
+- `npm run dev` – Vite only, sample data (`http://localhost:5173`)
+- `npm run dev:live` – Vite + functions, live folder (`http://localhost:8888`)
 - `npm run build` – type-check and build for production
 - `npm run preview` – preview the production build
 - `npm run lint` – run ESLint
+- `npm test` – run unit tests

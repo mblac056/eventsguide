@@ -9,7 +9,7 @@
   --muted: #5c554c;
   --muted-2: #7a7268;
   --brand: #fa5a01;
-  --brand-2: #27c156;
+  --brand-2: #275dc1;
   --live: #ff5a00;
   --accent: #ff5a00;
   --mark: #ffe14a;
@@ -38,7 +38,7 @@ body,
 }
 
 body {
-  background: linear-gradient(to right, #106f20, #119b25 100%);
+  background: linear-gradient(to left, #10446f, #062d4d 100%);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 }

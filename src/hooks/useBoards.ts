@@ -1,35 +1,42 @@
 import { useCallback, useEffect, useState } from 'react';
-import { loadSheetData } from '../lib/sheets';
-import type { SheetData } from '../types';
+import { loadBoards } from '../lib/sheets';
+import type { BoardSummary } from '../lib/boardsApi';
 
 interface State {
-  data: SheetData | null;
+  boards: BoardSummary[];
+  isMock: boolean;
   loading: boolean;
   error: string | null;
 }
 
-export function useSheetData() {
+export function useBoards() {
   const [state, setState] = useState<State>({
-    data: null,
+    boards: [],
+    isMock: false,
     loading: true,
     error: null,
   });
 
-  // Only sets state from async callbacks, so it's safe to call inside an effect.
   const runFetch = useCallback(() => {
-    loadSheetData()
-      .then((data) => setState({ data, loading: false, error: null }))
+    loadBoards()
+      .then((data) =>
+        setState({
+          boards: data.boards,
+          isMock: data.isMock,
+          loading: false,
+          error: null,
+        }),
+      )
       .catch((err: unknown) =>
         setState({
-          data: null,
+          boards: [],
+          isMock: false,
           loading: false,
-          error: err instanceof Error ? err.message : 'Failed to load schedule.',
+          error: err instanceof Error ? err.message : "Couldn't load the schedule.",
         }),
       );
   }, []);
 
-  // Triggered by user action (e.g. the refresh button), so a synchronous
-  // setState here is fine.
   const reload = useCallback(() => {
     setState((s) => ({ ...s, loading: true, error: null }));
     runFetch();

@@ -19,4 +19,19 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    files: ['netlify/**/*.ts'],
+    languageOptions: {
+      globals: globals.node,
+    },
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
+    files: ['**/*.test.ts'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])
