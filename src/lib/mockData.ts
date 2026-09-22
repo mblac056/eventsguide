@@ -13,10 +13,7 @@ function timeStr(d: Date): string {
   return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-/**
- * Build a slate of items around "now" so the sample always has something live
- * to show on first run, no matter what time it is opened.
- */
+/** Build a slate of items around "now" so the sample always has something live. */
 function liveDay(): RawRow[] {
   const now = new Date();
   const base = new Date(now);
@@ -67,27 +64,6 @@ function liveDay(): RawRow[] {
   ];
 }
 
-/** A fixed full-day schedule using plain time-of-day strings. */
-function sundaySchedule(): RawRow[] {
-  return [
-    { venue: 'Main Stage', item: 'Sunday Gospel Hour', details: 'Community choir performance.', startTime: '10:00 AM', endTime: '11:00 AM' },
-    { venue: 'Main Stage', item: 'Polka Party', details: 'Dust off your dancing shoes.', startTime: '12:00 PM', endTime: '1:30 PM' },
-    { venue: 'Main Stage', item: 'Battle of the Bands', details: 'Five local bands, one trophy.', startTime: '3:00 PM', endTime: '6:00 PM' },
-
-    { venue: 'Truck Pull Arena', item: 'Garden Tractor Pull', details: 'Small but mighty.', startTime: '11:00 AM', endTime: '12:30 PM' },
-    { venue: 'Truck Pull Arena', item: 'Street Diesel Pull', details: 'Daily drivers give it their all.', startTime: '2:00 PM', endTime: '4:00 PM' },
-
-    { venue: 'Grandstand', item: 'Figure 8 Race', details: 'Crossing paths at speed.', startTime: '1:00 PM', endTime: '2:30 PM' },
-    { venue: 'Grandstand', item: 'Mud Bog', details: 'Get dirty.', startTime: '4:00 PM', endTime: '5:30 PM' },
-
-    { venue: 'Kids Zone', item: 'Pony Rides', details: 'Gentle ponies, all ages.', startTime: '10:00 AM', endTime: '4:00 PM' },
-    { venue: 'Kids Zone', item: 'Face Painting', details: 'Tigers, butterflies, and more.', startTime: '11:00 AM', endTime: '3:00 PM' },
-
-    { venue: 'Exhibition Hall', item: 'Livestock Auction', details: '4-H members sell their animals.', startTime: '1:00 PM', endTime: '3:30 PM' },
-  ];
-}
-
 export const MOCK_EVENTS: MockEvent[] = [
-  { name: 'County Fair · Saturday', rows: liveDay() },
-  { name: 'County Fair · Sunday', rows: sundaySchedule() },
+  { name: 'County Fair', rows: liveDay() },
 ];

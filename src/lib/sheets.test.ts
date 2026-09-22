@@ -41,7 +41,11 @@ describe('loadBoard', () => {
     );
     const data = await loadBoard(MOCK_BOARD_SLUG);
     expect(data.isMock).toBe(true);
-    expect(data.events.length).toBeGreaterThan(0);
+    expect(data.events).toHaveLength(1);
+    expect(data.customLink).toEqual({
+      label: 'Fair Map',
+      href: 'https://dnu9jk22jnw2j.cloudfront.net/9ecf514191179f6273bd2f8f584dd51d.png',
+    });
   });
 
   it('throws NotFoundError for an unknown sample slug', async () => {

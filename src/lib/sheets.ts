@@ -24,7 +24,15 @@ export function mockBoardList(): { boards: BoardSummary[]; isMock: true } {
 export function mockSheetData(): SheetData {
   const anchor = new Date();
   const events = MOCK_EVENTS.map((e) => buildEvent(e.name, e.rows, anchor));
-  return { spreadsheetTitle: MOCK_BOARD_TITLE, events, isMock: true };
+  return {
+    spreadsheetTitle: MOCK_BOARD_TITLE,
+    events,
+    isMock: true,
+    customLink: {
+      label: 'Fair Map',
+      href: 'https://dnu9jk22jnw2j.cloudfront.net/9ecf514191179f6273bd2f8f584dd51d.png',
+    },
+  };
 }
 
 async function fetchApi<T>(path: string): Promise<T | 'unavailable'> {
