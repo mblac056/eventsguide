@@ -13,8 +13,9 @@ Built with **React + TypeScript + Vite**, hosted on **Netlify**.
 ## How a spreadsheet is structured
 
 - **Each spreadsheet is one event** (listed on the homepage by its title).
-- **Each tab in the spreadsheet** is a day or sub-event (e.g. `Saturday`).
-- Each tab has one row per scheduled item with these columns:
+- **Only the first tab** is used. Later tabs are ignored. Multi-day schedules
+  live on that first tab using the per-row `date` column.
+- The first tab has one row per scheduled item with these columns:
 
   | date | venue | item | item details | start time | end time |
   | ---- | ----- | ---- | ------------ | ---------- | -------- |
@@ -34,6 +35,8 @@ Notes:
   time-of-day values are treated as happening today.
 - A missing end time defaults to a one-hour block. An end earlier than the start
   is assumed to cross midnight.
+- **Optional toolbar link:** cell **J1** is the link label and **J2** is the
+  URL. Both must be non-empty for the button to appear in the toolbar.
 
 ## Quick start
 
@@ -88,7 +91,7 @@ Each new spreadsheet in the folder appears on the homepage as its title, at a
 - **Time scrubber**: jump back/forward by 15 minutes or an hour to preview the
   schedule at another moment. Hit the time pill to snap back to **LIVE**.
 - **Search**: filter across acts, venues, and details; matches are highlighted.
-- **Event tabs**: switch between days or sub-events (spreadsheet tabs).
+- **Custom link**: optional toolbar button from sheet cells J1/J2 (when both are set).
 - **↻**: refresh the list or the open schedule.
 
 ## Scripts
