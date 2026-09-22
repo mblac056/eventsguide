@@ -60,6 +60,7 @@ function BoardScreen({ slug }: { slug: string }) {
           isLive={isLive}
           onShift={(m) => setOffsetMin((o) => o + m)}
           onNow={() => setOffsetMin(0)}
+          customLink={data.customLink}
         />
       )}
 

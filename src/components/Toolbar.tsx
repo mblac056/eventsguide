@@ -11,6 +11,7 @@ interface ToolbarProps {
   isLive: boolean;
   onShift: (minutes: number) => void;
   onNow: () => void;
+  customLink?: { label: string; href: string };
 }
 
 function sameDay(a: Date, b: Date): boolean {
@@ -30,6 +31,7 @@ export function Toolbar({
   isLive,
   onShift,
   onNow,
+  customLink,
 }: ToolbarProps) {
   const dayLabel = sameDay(cursor, new Date())
     ? 'Today'
@@ -97,14 +99,16 @@ export function Toolbar({
         >
           Guide
         </button>
-        {/* <a
-          className="view__btn mapbtn"
-          href="https://dnu9jk22jnw2j.cloudfront.net/9ecf514191179f6273bd2f8f584dd51d.png"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Fair Map
-        </a> */}
+        {customLink && (
+          <a
+            className="view__btn mapbtn"
+            href={customLink.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {customLink.label}
+          </a>
+        )}
       </div>
     </div>
   );
