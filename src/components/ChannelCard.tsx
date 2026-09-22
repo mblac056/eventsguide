@@ -13,7 +13,7 @@ export function ChannelCard({ venue, cursor, query }: ChannelCardProps) {
   const { current, next, later } = venueState(venue, cursor);
   const live = current.length > 0;
 
-  let status = 'OFF AIR';
+  let status = 'WRAPPED';
   if (live) status = current.length > 1 ? `${current.length} ON NOW` : 'ON NOW';
   else if (next) status = 'UP NEXT';
 
