@@ -95,18 +95,35 @@ export function buildEvent(name: string, rows: RawRow[], anchor: Date): NowEvent
   return { name, venues, slots };
 }
 
-export function sheetDataFromPayload(payload: BoardDetail, isMock: boolean): SheetData {
-  const anchor = new Date();
-  const events = payload.tabs
-    .map((tab) => buildEvent(tab.title, rowsFromValues(tab.values), anchor))
-    .filter((e) => e.slots.length > 0);
+function customLinkFromValues(values: string[][]): SheetData['customLink'] {
+  const label = (values[0]?.[9] ?? '').toString().trim();
+  const href = (values[1]?.[9] ?? '').toString().trim();
+  if (!label || !href) return undefined;
+  return { label, href };
+}
 
-  if (events.length === 0) {
+export function sheetDataFromPayload(payload: BoardDetail, isMock: boolean): SheetData {
+  const first = payload.tabs[0];
+  if (!first) {
     throw new Error(
       'Connected to the schedule but found no usable rows. Check that tabs have ' +
         'venue / item / start time / end time columns.',
     );
   }
 
-  return { spreadsheetTitle: payload.title, events, isMock };
+  const anchor = new Date();
+  const event = buildEvent(first.title, rowsFromValues(first.values), anchor);
+  if (event.slots.length === 0) {
+    throw new Error(
+      'Connected to the schedule but found no usable rows. Check that tabs have ' +
+        'venue / item / start time / end time columns.',
+    );
+  }
+
+  return {
+    spreadsheetTitle: payload.title,
+    events: [event],
+    isMock,
+    customLink: customLinkFromValues(first.values),
+  };
 }

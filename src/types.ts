@@ -43,4 +43,6 @@ export interface SheetData {
   events: NowEvent[];
   /** True when the data is the bundled sample rather than a live sheet. */
   isMock: boolean;
+  /** Optional toolbar link from first-tab J1 (label) and J2 (href). */
+  customLink?: { label: string; href: string };
 }
