@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { NowEvent } from '../types';
-import { slotIsLive } from '../lib/schedule';
+import { slotIsLive, venueState } from '../lib/schedule';
 import { ChannelCard } from './ChannelCard';
 
 interface NowViewProps {
@@ -11,17 +11,24 @@ interface NowViewProps {
 
 export function NowView({ event, cursor, query }: NowViewProps) {
   const venues = useMemo(() => {
-    return [...event.venues].sort((a, b) => {
-      const aLive = a.slots.some((s) => slotIsLive(s, cursor)) ? 1 : 0;
-      const bLive = b.slots.some((s) => slotIsLive(s, cursor)) ? 1 : 0;
-      return bLive - aLive;
-    });
+    return [...event.venues]
+      .filter((venue) => {
+        const { current, next } = venueState(venue, cursor);
+        return current.length > 0 || next != null;
+      })
+      .sort((a, b) => {
+        const aLive = a.slots.some((s) => slotIsLive(s, cursor)) ? 1 : 0;
+        const bLive = b.slots.some((s) => slotIsLive(s, cursor)) ? 1 : 0;
+        return bLive - aLive;
+      });
   }, [event.venues, cursor]);
 
   if (venues.length === 0) {
     return (
       <div className="empty">
-        {query ? `No items match “${query}”.` : 'No venues to show for this event.'}
+        {query
+          ? `No items match “${query}”.`
+          : 'Nothing on now or coming up for this event.'}
       </div>
     );
   }
