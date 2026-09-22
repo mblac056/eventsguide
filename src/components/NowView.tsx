@@ -25,7 +25,7 @@ export function NowView({ event, cursor, query }: NowViewProps) {
 
   if (venues.length === 0) {
     return (
-      <div className="empty">
+      <div className="empty" style={{ color: 'white' }}>
         {query
           ? `No items match “${query}”.`
           : 'Nothing on now or coming up for this event.'}
