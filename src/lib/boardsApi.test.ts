@@ -51,6 +51,26 @@ describe('handleBoardsRequest', () => {
     });
   });
 
+  it('returns only the first tab for a slug', async () => {
+    const res = await get(
+      '/api/boards/county-fair-saturday',
+      client({
+        fetchSpreadsheet: async () => ({
+          title: 'County Fair · Saturday',
+          tabs: [
+            { title: 'Saturday', values: saturdayValues },
+            { title: 'Sunday', values: [['venue'], ['Other']] },
+          ],
+        }),
+      }),
+    );
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({
+      title: 'County Fair · Saturday',
+      tabs: [{ title: 'Saturday', values: saturdayValues }],
+    });
+  });
+
   it('returns 404 for an unknown slug', async () => {
     const res = await get('/api/boards/no-such-board', client());
     expect(res.status).toBe(404);

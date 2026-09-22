@@ -97,7 +97,10 @@ export async function handleBoardsRequest(req: Request, env: BoardsEnv): Promise
     }
 
     const sheet = await env.google.fetchSpreadsheet(match.id);
-    const body: BoardDetail = { title: sheet.title, tabs: sheet.tabs };
+    const body: BoardDetail = {
+      title: sheet.title,
+      tabs: sheet.tabs.slice(0, 1),
+    };
     return json(body, 200);
   } catch {
     return fail();
